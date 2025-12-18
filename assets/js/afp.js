@@ -1,0 +1,7 @@
+$(document).ready(function(){
+  let tabla = $('#tblAFP').DataTable({processing:true,serverSide:true,ajax:{url: base_url + 'assets/ajax/afp.php?op=listar',type:'POST'}, language:{url:'//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'}});
+  $('#botonCrear').click(()=>{ $('#formAFP')[0].reset(); $('#idafp').val(0); $('.modal-title').text('Nuevo AFP'); });
+  $('#formAFP').submit(function(e){ e.preventDefault(); $.ajax({ url: base_url + 'assets/ajax/afp.php?op=guardar', method:'POST', data: new FormData(this), processData:false, contentType:false, dataType:'json', success:function(res){ Swal.fire('OK',res.respuesta,'success'); $('#modalAFP').modal('hide'); tabla.ajax.reload(); } }); });
+  $(document).on('click','.editar',function(){ let id=$(this).attr('id'); $.post(base_url+'assets/ajax/afp.php?op=buscar',{id:id},function(d){ $('#modalAFP').modal('show'); $('#idafp').val(d.idafp); $('#nombre').val(d.nombre); $('#descripcion').val(d.descripcion); },'json'); });
+  $(document).on('click','.borrar',function(){ let id=$(this).attr('id'); Swal.fire({title:'Eliminar?',icon:'warning',showCancelButton:true}).then(r=>{ if(r.isConfirmed) { $.post(base_url+'assets/ajax/afp.php?op=eliminar',{id:id},function(res){ Swal.fire('OK',res.respuesta,'success'); tabla.ajax.reload(); },'json'); } }); });
+});
