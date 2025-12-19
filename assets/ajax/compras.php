@@ -217,7 +217,7 @@ $response2=json_decode($response2,true);
  ["mtoIgvIpmDGOriginal"]=> NULL }
 */ 
  
-//var_dump($response2['registros']["tipoCambio"]);
+//var_dump($response2['registros'][0]['montos']);
 /*curl_close($curl);
 header('Content-type: application/json');
 echo json_encode($response2);*/
@@ -225,7 +225,7 @@ echo json_encode($response2);*/
 
     foreach ($response2['registros'] as $data) 
     {
-        
+
         $tipocambiosire = $data["tipoCambio"]['mtoCambioMonedaExtranjera'];
         $movkey = $data['numDocIdentidadProveedor'].'-'.$data['codTipoCDP'].'-'.$data['numSerieCDP'].'-'.$data['numCDP'];
 
@@ -237,15 +237,18 @@ echo json_encode($response2);*/
                //echo $query_bpro.'->'.$num_reg_bpro;
                 /*fin buscar producto  mtoValorAdqNG*/
                 /*producto nuevo*/
+
+                $mtoBIGravadaDG = $data['montos']['mtoBIGravadaDG'];
+                $mtoIgvIpmDG    = $data['montos']['mtoIgvIpmDG'];
+                $mtoOtrosTrib   = $data['montos']['mtoOtrosTrib'];
+                $mtoValorAdqNG  = $data['montos']['mtoValorAdqNG'];
+                $mtoTotalCp     = $data['montos']['mtoTotalCp'];
+
                 if($num_reg_bpro == 0)
                 {
-                    /*importes a insertar*/
+                    /*importes a insertar*/                    
                     
-                    $mtoBIGravadaDG = $data['montos']['mtoBIGravadaDG'];
-                    $mtoIgvIpmDG    = $data['montos']['mtoIgvIpmDG'];
-                    $mtoOtrosTrib   = $data['montos']['mtoOtrosTrib'];
-                    $mtoValorAdqNG  = $data['montos']['mtoValorAdqNG'];
-                    $mtoTotalCp     = $data['montos']['mtoTotalCp'];
+                    
                     /*fin de importes*/
                     
                     if($data['codMoneda']=='USD')
@@ -262,8 +265,8 @@ echo json_encode($response2);*/
                     
                     
                     $stmt = $connect->prepare("INSERT INTO mov_compras 
-                (movkey, periodouso, rucemisor, razonemisor, tipdoc, seriedoc, numdoc, fechadocsire, basedocsire, igvdocsire, othdocsire, totaldocsire,moneda,idcliente,nogravado,tcambiosire) 
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    (movkey, periodouso, rucemisor, razonemisor, tipdoc, seriedoc, numdoc, fechadocsire, basedocsire, igvdocsire, othdocsire, totaldocsire,moneda,idcliente,nogravado,tcambiosire) 
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             $stmt->execute([ $movkey,
                              $periodo,
                              $data['numDocIdentidadProveedor'],
@@ -291,8 +294,8 @@ echo json_encode($response2);*/
             othdocsire=?, 
             totaldocsire=?, 
             moneda=? ,
-            nogravado,
-            tcambiosire
+            nogravado=?,
+            tcambiosire=?
         WHERE movkey=?");
     
     $stmt->execute([

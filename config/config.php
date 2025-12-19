@@ -5,8 +5,8 @@
  */
 
 // Configuración de la URL base
-const BASE_URL = "https://appsiscont.smartbase.club/";
-
+//const BASE_URL = "https://appsiscont.smartbase.club/";
+const BASE_URL = "http://localhost/app/";
 // Configuración de zona horaria
 const TIMEZONE = 'America/Lima';
 date_default_timezone_set(TIMEZONE);
