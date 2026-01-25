@@ -34,13 +34,10 @@ $row_config = $query_empresa->fetch(PDO::FETCH_ASSOC);
 
 $idcliente        = $row_config['id'];
 
-
+/*
 if ($ruce == '20493223641') {
 
-
-	/*********************/
-		/*DATOS PARA COMPRAS*/
-	/*******************/
+//datos de compras
 	$origen_compras       = $row_config['origencompras'];
 	$cta_igv_compra       = $row_config['cuenta40igv'];
 	$cta_42_s_compra      = $row_config['cuenta42soles'];
@@ -159,7 +156,7 @@ if ($ruce == '20493223641') {
 		}
 
 
-		/*sumatoria*/
+		//sumatoria
 
 		$glosa = 'RENDICION DE GASTOS';
 		$data[] = array(
@@ -208,7 +205,7 @@ if ($ruce == '20493223641') {
 			'refmonto' => ''
 		);
 		$vou++;
-		/*fin sumatoria*/
+	//fin sumatoria
 	}
 
 
@@ -220,7 +217,7 @@ if ($ruce == '20493223641') {
 	exit;
 }
 
-
+*/
 
 
 /*

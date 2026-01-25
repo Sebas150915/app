@@ -1,0 +1,164 @@
+/* =========================================
+   Layout Fixes
+   ========================================= */
+
+/* Fix header overlap */
+.body-wrapper {
+    padding-top: 120px !important;
+    /* Increased to ensure header clearance */
+    min-height: 100vh;
+    background-color: #f8fafc;
+    /* Very light gray/blue background for modern feel */
+}
+
+/* =========================================
+   Modern Minimalist Theme Overrides
+   ========================================= */
+
+/* 1. Sidebar Modernization */
+/* FORCE Sidebar background from dark blue to white/light */
+/* High specificity to override style.css */
+#sidebar,
+.left-sidebar,
+aside.left-sidebar,
+.sidebar-nav,
+.scroll-sidebar {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    border-right: 1px solid #e2e8f0 !important;
+    box-shadow: none !important;
+    background-image: none !important;
+    /* Remove any gradients */
+}
+
+/* Ensure no child elements carry the dark background */
+#sidebar * {
+    background-color: transparent;
+}
+
+/* Sidebar links text color */
+.sidebar-link,
+.hide-menu {
+    color: #475569 !important;
+    /* Slate-600 */
+    font-weight: 500;
+}
+
+/* Sidebar link hover/active state */
+.sidebar-link:hover,
+.sidebar-link.active {
+    background-color: #f1f5f9 !important;
+    /* Slate-100 */
+    color: #0f172a !important;
+    /* Slate-900 */
+    border-radius: 8px;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+
+/* Sidebar icons */
+.sidebar-link i,
+.sidebar-link iconify-icon {
+    color: #64748b !important;
+    /* Slate-500 */
+}
+
+.sidebar-link:hover i,
+.sidebar-link:hover iconify-icon,
+.sidebar-link.active i,
+.sidebar-link.active iconify-icon {
+    color: #4f46e5 !important;
+    /* Indigo-600 (Primary branding) */
+}
+
+/* 2. Header / Topbar Modernization */
+/* Target the fixed nav specifically */
+nav.fixed-top,
+.glass-header,
+.app-header {
+    background-color: #ffffff !important;
+    /* Solid white */
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    /* Remove blur to avoid weird rendering */
+    border-bottom: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Ensure the nav container spans full width if needed */
+.navbar-collapse {
+    background: transparent !important;
+}
+
+/* User profile text */
+.navbar-nav .nav-link .text-dark {
+    color: #334155 !important;
+}
+
+/* 3. Cards & Containers */
+.card {
+    background: #ffffff !important;
+    border: 1px solid #f1f5f9 !important;
+    /* Subtle border */
+    border-radius: 16px !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025) !important;
+    /* Soft shadow */
+    margin-bottom: 24px;
+}
+
+.card-body {
+    padding: 1.5rem !important;
+}
+
+/* Remove old black headers and replace with clean style */
+.card-header {
+    background-color: transparent !important;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 1.25rem 1.5rem;
+}
+
+.card-title,
+.modal-title {
+    color: #1e293b !important;
+    /* Slate-800 */
+    font-weight: 600 !important;
+    font-size: 1.1rem;
+    margin-bottom: 0;
+}
+
+/* 4. Tables Modernization */
+.table thead th {
+    background-color: #f8fafc !important;
+    color: #475569 !important;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #e2e8f0 !important;
+    border-top: none !important;
+}
+
+.table td {
+    vertical-align: middle;
+    color: #334155;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #4f46e5;
+    /* Indigo-600 */
+    border-color: #4f46e5;
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+}
+
+.btn-primary:hover {
+    background-color: #4338ca;
+    border-color: #4338ca;
+}
+
+/* Branding Text Fix */
+.brand-logo .text-white {
+    color: #1e293b !important;
+    /* Change logo text to dark */
+}
