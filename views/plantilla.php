@@ -18,6 +18,7 @@ if (isset($_SESSION["iniciarSesion"]) && $_SESSION["iniciarSesion"] == "cinema")
       $rutas[0] == "bancos" ||
       $rutas[0] == "locales" ||
       $rutas[0] == "clientes" ||
+      $rutas[0] == "clientes_empresas" ||
       $rutas[0] == "rpt_rendicion" ||
       $rutas[0] == "sire_compras" ||
       $rutas[0] == "sire_compras_det" ||

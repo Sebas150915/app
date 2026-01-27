@@ -162,3 +162,24 @@ nav.fixed-top,
     color: #1e293b !important;
     /* Change logo text to dark */
 }
+
+/* Sidebar section labels */
+.nav-section {
+    color: #94a3b8 !important;
+}
+
+/* Submenu links */
+.sub-link {
+    color: #475569 !important;
+}
+
+.sub-link:hover,
+.sub-link.fw-semibold {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
+}
+
+/* Active parent in collapses */
+.active-parent {
+    color: #0f172a !important;
+}

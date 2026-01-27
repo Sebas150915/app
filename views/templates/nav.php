@@ -36,7 +36,7 @@
                 <img src="<?= base_url() ?>/assets/images/profile/user-1.jpg" alt="" width="56" height="56" class="rounded-circle border border-2 border-white">
               </div>
               <h6 class="mb-0 text-white">Administrador</h6>
-              <small class="text-white-50">admin@gestia.com</small>
+              <small class="text-white-50">ventas@asesorateperu.com</small>
             </div>
             <div class="message-body p-2">
               <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item px-3 py-2 rounded-2">
@@ -54,68 +54,3 @@
     </div>
   </div>
 </nav>
-
-<style>
-  /* Glass Header Style */
-  .glass-header {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-    transition: all 0.3s ease;
-  }
-
-  .nav-icon-hover {
-    transition: all 0.2s;
-  }
-
-  .nav-icon-hover:hover iconify-icon {
-    color: var(--primary);
-    transform: scale(1.1);
-  }
-
-  .notification {
-    width: 10px;
-    height: 10px;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0% {
-      box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7);
-    }
-
-    70% {
-      box-shadow: 0 0 0 6px rgba(79, 70, 229, 0);
-    }
-
-    100% {
-      box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
-    }
-  }
-
-  .dropdown-menu-animate-up {
-    animation: fadeInUp 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .transition-transform {
-    transition: transform 0.2s;
-  }
-
-  .nav-link:hover .transition-transform {
-    transform: scale(1.05);
-  }
-</style>

@@ -177,14 +177,15 @@ if (isset($json['success']) && $json['success'] && isset($json['detalles'])) {
         echo json_encode(['success' => false, 'message' => 'Error prepare insert: ' . $conn->error]);
         exit;
     }
-
+    $glosa_contable = '';
     foreach ($json['detalles'] as $det) {
+         $descripcion = substr($det['descripcion'], 0, 60);
         $ins->bind_param(
             "sissssdddd",
             $movkey,
             $det['item'],
             $det['codigo'],
-            $det['descripcion'],
+            $descripcion,
             $det['cantidad'],
             $det['unidad_medida'],
             $det['precio_unitario'],
@@ -193,7 +194,16 @@ if (isset($json['success']) && $json['success'] && isset($json['detalles'])) {
             $det['subtotal']
         );
         $ins->execute();
+
+        $glosa_contable .= $det['descripcion'].', ';
     }
+    $glosa_contable = trim($glosa_contable);
+    $glosa_contable = ucfirst($glosa_contable);
+    $glosa_contable = substr($glosa_contable, 0, 60);
+     // Actualizar glosa contable en la cabecera
+     $upd = $conn->prepare("UPDATE mov_compras SET glosasire = ? WHERE movkey = ?");
+     $upd->bind_param("ss", $glosa_contable, $movkey);
+     $upd->execute();
 
     echo json_encode(['success' => true]);
 } else {

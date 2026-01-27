@@ -44,6 +44,9 @@
           <li class="nav-item"><a href="<?= base_url() ?>/bancos" class="d-block py-2 px-3 rounded-2 text-decoration-none sub-link">Bancos</a></li>
           <li class="nav-item"><a href="<?= base_url() ?>/locales" class="d-block py-2 px-3 rounded-2 text-decoration-none sub-link">Locales</a></li>
           <li class="nav-item"><a href="<?= base_url() ?>/clientes" class="d-block py-2 px-3 rounded-2 text-decoration-none sub-link">Empresas</a></li>
+          <?php if($_SESSION['id_empresa']==1 || $_SESSION['id_empresa']==3){ ?>
+          <li class="nav-item"><a href="<?= base_url() ?>/clientes_empresas" class="d-block py-2 px-3 rounded-2 text-decoration-none sub-link">Clientes</a></li>
+          <?php } ?>
         </ul>
       </li>
 

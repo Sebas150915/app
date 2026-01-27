@@ -34,10 +34,11 @@ $row_config = $query_empresa->fetch(PDO::FETCH_ASSOC);
 
 $idcliente        = $row_config['id'];
 
-/*
-if ($ruce == '20493223641') {
 
-//datos de compras
+if ($ruce == '20493223641') 
+{
+
+  //datos de compras
 	$origen_compras       = $row_config['origencompras'];
 	$cta_igv_compra       = $row_config['cuenta40igv'];
 	$cta_42_s_compra      = $row_config['cuenta42soles'];
@@ -213,11 +214,195 @@ if ($ruce == '20493223641') {
 
 
 	echo json_encode($data);
+	exit;
 
+}
+
+else if($ruce == '20407919905')
+{
+	$query = "SELECT * 
+          FROM vw_mov_rendicion_cab 
+          WHERE fecharendicion 
+          BETWEEN :fechai AND :fechaf 
+          AND idcliente = :idcliente";
+
+	$stmt = $connect->prepare($query);
+	$stmt->execute([
+		':fechai' => $fechai,
+		':fechaf' => $fechaf,
+		':idcliente' => $idcliente
+	]);
+
+	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$vou = 1;
+	foreach ($result as $datos) {
+		$moneda = 'D';
+		$cta_42 = $cta_42_d_compra;
+		if ($datos['moneda'] == 'PEN') {
+			$moneda = 'S';
+			$cta_42 = $cta_42_s_compra;
+		}
+		$glosa = $datos['descripcion'];
+		$data[] = array(
+			'origen' => $origen_compras,
+			'vou' => '' . $vou,
+			'fecha' => date("d/m/Y", strtotime($datos['fechadocsire'])),
+			'cuenta' => '' . $cta_42,
+			'debe' => '0.00',
+			'haber' => '' . $datos['total'],
+			'moneda' => $moneda,
+			'tc' => '' . $datos['tcambio'],
+			'doc' => $datos['tipodoc'],
+			'numero' => $datos['seriedoc'] . "-" . $datos['numdoc'],
+			'fechad' => date("d/m/Y", strtotime($datos['fechadocsire'])),
+			'fechav' => date("d/m/Y", strtotime($datos['fechadocsire'])),
+			'codigo' => $datos['rucemisor'],
+			'cc' => '',
+			'pre' => '',
+			'fe' => '',
+			'glosa' => $glosa,
+			'tl' => '',
+			'neto1' => '',
+			'neto2' => '',
+			'neto3' => '',
+			'neto4' => '',
+			'neto5' => '',
+			'neto6' => '',
+			'neto7' => '',
+			'neto8' => '',
+			'neto9' => '',
+			'igv' => '',
+			'rdoc' => '',
+			'rnum' => '',
+			'rfec' => '',
+			'snum' => '',
+			'sfec' => '',
+			'ruc' => $datos['rucemisor'],
+			'rs' => $datos['razonemisor'],
+			'tipo' => '2',
+			'tdoci' => '6',
+			'mpago' => '',
+			'ape1' => '',
+			'ape2' => '',
+			'nombre' => '',
+			'tbien' => '',
+			'refmonto' => '0.00'
+		);
+
+		if ($datos['tipodoc'] <> '00') {
+			$data[] = array(
+				'origen' => $origen_compras,
+				'vou' => '' . $vou,
+				'fecha' => date("d/m/Y", strtotime($datos['fechadocsire'])),
+				'cuenta' => '' . $cta_igv_compra,
+				'debe' => '' . $datos['igvdocsire'],
+				'haber' => '0.00',
+				'moneda' => $moneda,
+				'tc' => '' . $datos['tcambio'],
+				'doc' => $datos['tipodoc'],
+				'numero' => $datos['seriedoc'] . "-" . $datos['numdoc'],
+				'fechad' => date("d/m/Y", strtotime($datos['fechadocsire'])),
+				'fechav' => date("d/m/Y", strtotime($datos['fechadocsire'])),
+				'codigo' => $datos['rucemisor'],
+				'cc' => '',
+				'pre' => '',
+				'fe' => '',
+				'glosa' => $glosa,
+				'tl' => 'C',
+				'neto1' => '' . $datos['basedocsire'],
+				'neto2' => '',
+				'neto3' => '',
+				'neto4' => '',
+				'neto5' => '',
+				'neto6' => '' . $datos['nogravado'],
+				'neto7' => '' . $datos['othdocsire'],
+				'neto8' => '',
+				'neto9' => '',
+				'igv' => '' . $datos['igvdocsire'],
+				'rdoc' => '',
+				'rnum' => '',
+				'rfec' => '',
+				'snum' => '',
+				'sfec' => '',
+				'ruc' => $datos['rucemisor'],
+				'rs' => $datos['razonemisor'],
+				'tipo' => '2',
+				'tdoci' => '6',
+				'mpago' => '',
+				'ape1' => '',
+				'ape2' => '',
+				'nombre' => '',
+				'tbien' => '',
+				'refmonto' => '0.00'
+			);
+		}
+
+		$baseimponible = $datos['basedocsire'] + $datos['nogravado'];
+		$cc  = $datos['cc_codigo'];
+		$pre = $datos['pre_codigo'];
+
+		if ($cc == '0') {
+			$cc = '';
+		}
+
+		if ($pre == '0') {
+			$pre = '';
+		}
+		$data[] = array(
+			'origen' => $origen_compras,
+			'vou' => '' . $vou,
+			'fecha' => date("d/m/Y", strtotime($datos['fechadocsire'])),
+			'cuenta' => '' . $datos['cuenta_codigo'],
+			'debe' => '' . $baseimponible,
+			'haber' => '0.00',
+			'moneda' => $moneda,
+			'tc' => '' . $datos['tcambio'],
+			'doc' => $datos['tipodoc'],
+			'numero' => $datos['seriedoc'] . "-" . $datos['numdoc'],
+			'fechad' => date("d/m/Y", strtotime($datos['fechadocsire'])),
+			'fechav' => date("d/m/Y", strtotime($datos['fechadocsire'])),
+			'codigo' => $datos['rucemisor'],
+			'cc' => '' . $cc,
+			'pre' => '' . $pre,
+			'fe' => '',
+			'glosa' => $glosa,
+			'tl' => '',
+			'neto1' => '',
+			'neto2' => '',
+			'neto3' => '',
+			'neto4' => '',
+			'neto5' => '',
+			'neto6' => '',
+			'neto7' => '',
+			'neto8' => '',
+			'neto9' => '',
+			'igv' => '',
+			'rdoc' => '',
+			'rnum' => '',
+			'rfec' => '',
+			'snum' => '',
+			'sfec' => '',
+			'ruc' => $datos['rucemisor'],
+			'rs' => $datos['razonemisor'],
+			'tipo' => '2',
+			'tdoci' => '6',
+			'mpago' => '',
+			'ape1' => '',
+			'ape2' => '',
+			'nombre' => '',
+			'tbien' => '',
+			'refmonto' => '0.00'
+		);
+
+		$vou++;
+	}
+
+    echo json_encode($data);
 	exit;
 }
 
-*/
+else
+{
 
 
 /*
@@ -250,7 +435,16 @@ foreach ($result as $datos) {
 		$moneda = 'S';
 		$cta_42 = $cta_42_s_compra;
 	}
+    
+    $tl = 'C';
+	if($datos['tipdoc'] == '02'){
+		$tl = 'H';
+		$origen_compras = $row_config['origenhonorarios'];
+		$cta_42 = $row_config['cuentarhsoles'];
+		$cta_igv_compra = $row_config['cuenta40rh'];
+	}
 
+	
 
 	$glosa = $datos['glosasire'];
 	$data[] = array(
@@ -317,7 +511,7 @@ foreach ($result as $datos) {
 		'pre' => '',
 		'fe' => '',
 		'glosa' => $glosa,
-		'tl' => 'C',
+		'tl' => ''.$tl,
 		'neto1' => $datos['basedocsire'],
 		'neto2' => '',
 		'neto3' => '',
@@ -458,193 +652,16 @@ foreach ($result as $datos) {
 	$vou++;
 }
 
-
-
-
-
-
-
-
-
-
-$query = "SELECT * 
-          FROM vw_mov_rendicion_cab 
-          WHERE fecharendicion 
-          BETWEEN :fechai AND :fechaf 
-          AND idcliente = :idcliente";
-
-$stmt = $connect->prepare($query);
-$stmt->execute([
-	':fechai' => $fechai,
-	':fechaf' => $fechaf,
-	':idcliente' => $idcliente
-]);
-
-$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$vou = 1;
-foreach ($result as $datos) {
-	$moneda = 'D';
-	$cta_42 = $cta_42_d_compra;
-	if ($datos['moneda'] == 'PEN') {
-		$moneda = 'S';
-		$cta_42 = $cta_42_s_compra;
-	}
-	$glosa = $datos['descripcion'];
-	$data[] = array(
-		'origen' => $origen_compras,
-		'vou' => '' . $vou,
-		'fecha' => date("d/m/Y", strtotime($datos['fechadocsire'])),
-		'cuenta' => '' . $cta_42,
-		'debe' => '0.00',
-		'haber' => '' . $datos['total'],
-		'moneda' => $moneda,
-		'tc' => '' . $datos['tcambio'],
-		'doc' => $datos['tipodoc'],
-		'numero' => $datos['seriedoc'] . "-" . $datos['numdoc'],
-		'fechad' => date("d/m/Y", strtotime($datos['fechadocsire'])),
-		'fechav' => date("d/m/Y", strtotime($datos['fechadocsire'])),
-		'codigo' => $datos['rucemisor'],
-		'cc' => '',
-		'pre' => '',
-		'fe' => '',
-		'glosa' => $glosa,
-		'tl' => '',
-		'neto1' => '',
-		'neto2' => '',
-		'neto3' => '',
-		'neto4' => '',
-		'neto5' => '',
-		'neto6' => '',
-		'neto7' => '',
-		'neto8' => '',
-		'neto9' => '',
-		'igv' => '',
-		'rdoc' => '',
-		'rnum' => '',
-		'rfec' => '',
-		'snum' => '',
-		'sfec' => '',
-		'ruc' => $datos['rucemisor'],
-		'rs' => $datos['razonemisor'],
-		'tipo' => '2',
-		'tdoci' => '6',
-		'mpago' => '',
-		'ape1' => '',
-		'ape2' => '',
-		'nombre' => '',
-		'tbien' => '',
-		'refmonto' => '0.00'
-	);
-
-	if ($datos['tipodoc'] <> '00') {
-		$data[] = array(
-			'origen' => $origen_compras,
-			'vou' => '' . $vou,
-			'fecha' => date("d/m/Y", strtotime($datos['fechadocsire'])),
-			'cuenta' => '' . $cta_igv_compra,
-			'debe' => '' . $datos['igvdocsire'],
-			'haber' => '0.00',
-			'moneda' => $moneda,
-			'tc' => '' . $datos['tcambio'],
-			'doc' => $datos['tipodoc'],
-			'numero' => $datos['seriedoc'] . "-" . $datos['numdoc'],
-			'fechad' => date("d/m/Y", strtotime($datos['fechadocsire'])),
-			'fechav' => date("d/m/Y", strtotime($datos['fechadocsire'])),
-			'codigo' => $datos['rucemisor'],
-			'cc' => '',
-			'pre' => '',
-			'fe' => '',
-			'glosa' => $glosa,
-			'tl' => 'C',
-			'neto1' => '' . $datos['basedocsire'],
-			'neto2' => '',
-			'neto3' => '',
-			'neto4' => '',
-			'neto5' => '',
-			'neto6' => '' . $datos['nogravado'],
-			'neto7' => '' . $datos['othdocsire'],
-			'neto8' => '',
-			'neto9' => '',
-			'igv' => '' . $datos['igvdocsire'],
-			'rdoc' => '',
-			'rnum' => '',
-			'rfec' => '',
-			'snum' => '',
-			'sfec' => '',
-			'ruc' => $datos['rucemisor'],
-			'rs' => $datos['razonemisor'],
-			'tipo' => '2',
-			'tdoci' => '6',
-			'mpago' => '',
-			'ape1' => '',
-			'ape2' => '',
-			'nombre' => '',
-			'tbien' => '',
-			'refmonto' => '0.00'
-		);
-	}
-
-	$baseimponible = $datos['basedocsire'] + $datos['nogravado'];
-	$cc  = $datos['cc_codigo'];
-	$pre = $datos['pre_codigo'];
-
-	if ($cc == '0') {
-		$cc = '';
-	}
-
-	if ($pre == '0') {
-		$pre = '';
-	}
-	$data[] = array(
-		'origen' => $origen_compras,
-		'vou' => '' . $vou,
-		'fecha' => date("d/m/Y", strtotime($datos['fechadocsire'])),
-		'cuenta' => '' . $datos['cuenta_codigo'],
-		'debe' => '' . $baseimponible,
-		'haber' => '0.00',
-		'moneda' => $moneda,
-		'tc' => '' . $datos['tcambio'],
-		'doc' => $datos['tipodoc'],
-		'numero' => $datos['seriedoc'] . "-" . $datos['numdoc'],
-		'fechad' => date("d/m/Y", strtotime($datos['fechadocsire'])),
-		'fechav' => date("d/m/Y", strtotime($datos['fechadocsire'])),
-		'codigo' => $datos['rucemisor'],
-		'cc' => '' . $cc,
-		'pre' => '' . $pre,
-		'fe' => '',
-		'glosa' => $glosa,
-		'tl' => '',
-		'neto1' => '',
-		'neto2' => '',
-		'neto3' => '',
-		'neto4' => '',
-		'neto5' => '',
-		'neto6' => '',
-		'neto7' => '',
-		'neto8' => '',
-		'neto9' => '',
-		'igv' => '',
-		'rdoc' => '',
-		'rnum' => '',
-		'rfec' => '',
-		'snum' => '',
-		'sfec' => '',
-		'ruc' => $datos['rucemisor'],
-		'rs' => $datos['razonemisor'],
-		'tipo' => '2',
-		'tdoci' => '6',
-		'mpago' => '',
-		'ape1' => '',
-		'ape2' => '',
-		'nombre' => '',
-		'tbien' => '',
-		'refmonto' => '0.00'
-	);
-
-	$vou++;
+echo json_encode($data);
+exit;
 }
 
 
 
 
-echo json_encode($data);
+
+
+
+
+
+

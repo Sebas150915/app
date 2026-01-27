@@ -3,6 +3,7 @@
 <title><?= nombre() ?></title>
 <link rel="stylesheet" href="<?= base_url() ?>/assets/css/styles.css?v=0" />
 <link rel="shortcut icon" type="image/png" href="<?= media() ?>/images/logos/icono.png" />
+<link rel="stylesheet" href="<?= base_url() ?>/assets/css/custom_modern.css?v=<?= time() ?>" />
 
 
 <!-- Bootstrap Icons -->
@@ -22,29 +23,6 @@
 
 
 <style>
-    .sidebar-link,
-    .hide-menu {
-        color: white;
-    }
-
-    .left-sidebar {
-        background-color: #0A71BF;
-    }
-
-    span {
-        color: white;
-    }
-
-    .modal-title,
-    .card-title {
-        color: white;
-        font-weight: bold;
-    }
-
-    .card-header {
-        background-color: black;
-    }
-
     .dt-buttons {
         text-align: center;
         margin-bottom: 15px;
@@ -97,21 +75,7 @@
     }
 
 
-    table.dataTable thead>tr>th.dt-orderable-asc,
-    table.dataTable thead>tr>th.dt-orderable-desc,
-    table.dataTable thead>tr>th.dt-orderable-none {
-        background-color: black !important;
-        color: white;
-    }
-
-
     .body-wrapper>.container-fluid {
         max-width: 95% !important;
     }
-
-
-
-
-
-    < !-- Custom Modern Styles --><link rel="stylesheet" href="<?= base_url() ?>/assets/css/custom_modern.css?v=<?= time() ?>" />
 </style>
