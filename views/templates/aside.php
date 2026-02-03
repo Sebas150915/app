@@ -92,6 +92,8 @@
           <li class="nav-item"><a href="<?= base_url() ?>/afp" class="d-block py-2 px-3 rounded-2 text-decoration-none sub-link">AFP</a></li>
           <div class="my-1 border-top opacity-50"></div>
           <li class="nav-item"><a href="<?= base_url() ?>/configuracion" class="d-block py-2 px-3 rounded-2 text-decoration-none sub-link">CONFIGURACION</a></li>
+           <div class="my-1 border-top opacity-50"></div>
+          <li class="nav-item"><a href="<?= base_url() ?>/planillas" class="d-block py-2 px-3 rounded-2 text-decoration-none sub-link">PLANILLAS</a></li>
         </ul>
       </li>
       <!-- EXTRA -->

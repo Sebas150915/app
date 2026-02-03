@@ -15,7 +15,14 @@
       <div class="container-fluid">
         <div class="card border border-dark">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <h5>Trabajadores</h5>
+            <div class="d-flex align-items-center gap-3">
+              <h5 class="mb-0">Trabajadores</h5>
+              <div class="col-md-6">
+                <select class="form-control" id="clientes">
+                  <option value="">--SELECCIONE CLIENTE--</option>
+                </select>
+              </div>
+            </div>
             <button class="btn btn-primary" id="botonCrear" data-bs-toggle="modal" data-bs-target="#modalTrabajador">
               <i class="bi bi-plus-circle"></i> Nuevo Trabajador
             </button>
@@ -34,7 +41,7 @@
                   <th>Contrato</th>
                   <th>Estado</th>
                   <th>Editar</th>
-                  <th>Borrar</th>
+                  <th>Dar de Baja</th>
                 </tr>
               </thead>
               <tbody></tbody>
@@ -50,7 +57,7 @@
   <?php include 'views/templates/footer.php'; ?>
   <?php include 'views/modules/modals/trabajador.php'; ?>
 
-  <script src="<?= BASE_URL ?>assets/js/trabajadores.js"></script>
+  <script src="<?= BASE_URL ?>assets/js/trabajadores.js?<?= time() ?>"></script>
 </body>
 
 </html>

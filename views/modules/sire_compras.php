@@ -99,6 +99,12 @@
                                                     <i class="bx bx-download"></i> Generar TXT
                                                 </button>
                                             </div>
+
+                                            <div class="col-md-auto">
+                                                <button type="button" id="btnDescargaMasiva" class="btn btn-warning">
+                                                    <i class="bx bx-cloud-download"></i> Descarga Masiva
+                                                </button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -157,16 +163,22 @@
 
                     // Inicializar DataTable SOLO si existe la tabla
                     if ($("#tablacompras").length) {
-                        $('#tablacompras').DataTable({
-                            destroy: true,
-                            scrollX: true, // 👈 scroll horizontal
-                            lengthChange: false,
-                            buttons: ['copy', 'excel', 'pdf', 'print'],
+                        new DataTable('#tablacompras', {
+                            scrollX: true,
+                            dom: 'Bfrtip',
+                            layout: {
+                                topStart: 'buttons'
+                            },
+                            buttons: [{
+                                extend: 'excelHtml5',
+                                text: 'Descargar Excel',
+                                className: 'btn btn-sm success'
+                            }],
                             columnDefs: [{
                                 targets: "_all",
                                 className: "dt-nowrap"
                             }]
-                        }).buttons().container().appendTo('#tablacompras_wrapper .col-md-6:eq(0)');
+                        });
                     }
                 }
             });
@@ -225,8 +237,70 @@
 
 
 
+
+            });
+
+            $("#btnDescargaMasiva").on("click", function() {
+                var anio = $("#anio").val();
+                var mes = $("#mes").val();
+                let cliente_id = $('#clientes').val();
+
+                if (!cliente_id) {
+                    Swal.fire("Error", "Seleccione un cliente", "error");
+                    return;
+                }
+
+                iniciarDescargaMasiva(anio, mes, cliente_id);
             });
         });
+
+        function iniciarDescargaMasiva(anio, mes, cliente_id) {
+            Swal.fire({
+                title: 'Descargando Archivos...',
+                html: 'Procesando descargas...<br><b>Por favor no cierre esta ventana</b>',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            procesarLote(anio, mes, cliente_id);
+        }
+
+        function procesarLote(anio, mes, cliente_id) {
+            $.ajax({
+                url: base_url + "/assets/ajax/descarga_masiva.php",
+                type: "POST",
+                data: {
+                    anio: anio,
+                    mes: mes,
+                    cliente_id: cliente_id
+                },
+                dataType: "json",
+                success: function(res) {
+                    if (res.status === 'ongoing') {
+                        // Update status message
+                        Swal.update({
+                            text: `Descargando... Procesados: ${res.processed} | Descargados: ${res.downloaded} | Errores: ${res.errors}`
+                        });
+
+                        // Continue to next batch
+                        procesarLote(anio, mes, cliente_id);
+                    } else if (res.status === 'finished') {
+                        Swal.fire("Completado", "La descarga masiva ha finalizado.", "success");
+                        cargarTabla();
+                    } else {
+                        Swal.fire("Error", res.message || "Ocurrió un error desconocido", "error");
+                    }
+                },
+                error: function(err) {
+                    console.error(err);
+                    Swal.fire("Error", "Error de conexión con el servidor", "error");
+                }
+            });
+        }
+
+
 
 
         // ======== CARGAR CLIENTES ===========
