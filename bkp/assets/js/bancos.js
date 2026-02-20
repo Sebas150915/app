@@ -1,0 +1,9 @@
+$(document).ready(function(){
+  let tabla = $('#tblBancos').DataTable({processing:true,serverSide:true,ajax:{url: base_url + 'assets/ajax/bancos_custom.php?op=listar',type:'POST'}, language:{url:'//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'}});
+  $('#botonCrear').click(()=>{ $('#formBanco')[0].reset(); $('#idbanco').val(0); $('#modalBanco').modal('show'); });
+  // cargar clientes para filtro
+  $.post(base_url+'assets/ajax/bancos_custom.php?op=clientes',{},function(d){ let o='<option value="">--SELECCIONE CLIENTE--</option>'; $.each(d,function(i,it){ o+='<option value="'+it.id+'">'+it.ruc+' - '+it.razon+'</option>'; }); $('#clientes').html(o); },'json');
+  $('#formBanco').submit(function(e){ e.preventDefault(); $.ajax({ url: base_url+'assets/ajax/bancos_custom.php?op=guardar', method:'POST', data:new FormData(this), processData:false, contentType:false, dataType:'json', success:function(r){ Swal.fire('OK',r.respuesta,'success'); $('#modalBanco').modal('hide'); tabla.ajax.reload(); } }); });
+  $(document).on('click','.editar',function(){ let id=$(this).attr('id'); $.post(base_url+'assets/ajax/bancos_custom.php?op=buscar',{id:id},function(d){ $('#modalBanco').modal('show'); $('#idbanco').val(d.idbanco); $('#nombre').val(d.nombre); $('#codigo').val(d.codigo_banco); },'json'); });
+  $(document).on('click','.borrar',function(){ let id=$(this).attr('id'); Swal.fire({title:'Cambiar estado?',icon:'warning',showCancelButton:true}).then(r=>{ if(r.isConfirmed){ $.post(base_url+'assets/ajax/bancos_custom.php?op=eliminar',{id:id},function(res){ Swal.fire('OK',res.respuesta,'success'); tabla.ajax.reload(); },'json'); } }); });
+});

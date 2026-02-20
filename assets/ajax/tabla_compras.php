@@ -20,6 +20,9 @@ $colortexto = '#fff';
     <table id="tablacompras" class="table table-striped table-bordered" style="width:100%;">
         <thead class="table-dark dark">
             <tr class="table-dark dark">
+                <th class="table-dark dark" style="width: 40px;">
+                    <input type="checkbox" class="form-check-input" id="selectAllTable">
+                </th>
                 <th class="table-dark dark">movkey</th>
                 <th class="table-dark dark">periodo</th>
                 <th class="table-dark dark">RUC Proveedor</th>
@@ -45,6 +48,7 @@ $colortexto = '#fff';
                 <th class="table-dark dark">Dif. Totales</th>
                 <th class="table-dark dark">Moneda</th>
                 <th class="table-dark dark">Tip. Cambio</th>
+                <th class="table-dark dark">SISCONT</th>
                 <th class="table-dark dark">Acciones</th>
             </tr>
         </thead>
@@ -57,6 +61,9 @@ $colortexto = '#fff';
                 }
             ?>
                 <tr>
+                    <td>
+                        <input type="checkbox" class="form-check-input row-checkbox" data-id="<?= $row['movkey'] ?>">
+                    </td>
                     <td><?= htmlspecialchars($row['movkey']) ?></td>
                     <td><?= htmlspecialchars($row['periodouso']) ?></td>
                     <td><?= htmlspecialchars($row['rucemisor']) ?></td>
@@ -85,6 +92,11 @@ $colortexto = '#fff';
                     <td align="right"><?= formatMoney($row['totaldocsire'] - $row['totaldocsire'], $simbolo) ?></td>
                     <td><?= htmlspecialchars($row['moneda']) ?></td>
                     <td><?= htmlspecialchars($row['tcambiosire']) ?></td>
+                    <td>
+                        <span class="badge badge-<?= $row['siscont'] == 'SI' ? 'success' : 'danger' ?>">
+                            <?= htmlspecialchars($row['siscont'] ?? 'NO') ?>
+                        </span>
+                    </td>
                     <td>
                         <div class="btn-group" role="group">
                             <button onclick="descargar('02', '<?= $row['rucemisor'] ?>', '<?= $row['tipdoc'] ?>', '<?= $row['seriedoc'] ?>', '<?= $row['numdoc'] ?>')"
